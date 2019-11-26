@@ -13,7 +13,7 @@ public class PassportService {
     IUserDao userDao;
 
     public User getUser(String userName, String password) {
-        return userDao.getUser(userName, password);
+        return userDao.selectUser(userName, password);
     }
 
     public String getCookie(User user) {
@@ -22,16 +22,21 @@ public class PassportService {
         long currentTime = System.currentTimeMillis();
         String cookie = Convert.getMD5String(userId + password + currentTime);
         if (cookie != null) {
-            userDao.saveCookie(String.valueOf(userId), cookie);
+            userDao.updateCookie(String.valueOf(userId), cookie);
         }
         return cookie;
     }
 
-    public boolean userExist(String userName) {
-        return userDao.userExist(userName);
+    public Integer getUserCountByName(String userName) {
+        return userDao.selectUserCountByName(userName);
     }
 
-    public User createUser(String userName, String password) {
-        return userDao.createUser(userName, password);
+    public User getUserByCookie(String cookie) {
+        return userDao.selectUserByCookie(cookie);
+    }
+
+
+    public Integer createUser(User user) {
+        return userDao.insertUser(user);
     }
 }

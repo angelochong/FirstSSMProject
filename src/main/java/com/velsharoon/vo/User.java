@@ -14,14 +14,6 @@ public class User {
     private String cookie;
     private int userId;
 
-    public User(Integer userId, String name, Integer age, String password,String cookie) {
-        this.userId = userId;
-        this.name = name;
-        this.age = age;
-        this.password = password;
-        this.cookie = cookie;
-    }
-
     public int getAge() {
         return age;
     }

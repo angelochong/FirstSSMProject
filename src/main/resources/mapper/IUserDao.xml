@@ -2,28 +2,25 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.velsharoon.dao.IUserDao">
     <resultMap id="BaseResultMap" type="com.velsharoon.vo.User">
-        <id property="userId" column="userId"/>
+        <id property="userId" column="userId" />
         <result property="age" column="age"/>
         <result property="name" column="name"/>
         <result property="password" column="password"/>
         <result property="cookie" column="cookie"/>
     </resultMap>
-    <select id="getUserList" resultMap="BaseResultMap" resultType="java.util.List">
-        select * from user
-    </select>
-    <select id="getUser" resultMap="BaseResultMap" resultType="com.velsharoon.vo.User">
+    <select id="selectUser" resultMap="BaseResultMap" resultType="com.velsharoon.vo.User">
         select * from user where name = #{name} AND password = #{password}
     </select>
-    <select id="getUserByCookie" resultMap="BaseResultMap" resultType="com.velsharoon.vo.User">
+    <select id="selectUserByCookie" resultMap="BaseResultMap" resultType="com.velsharoon.vo.User">
         select * from user where cookie = #{cookie}
     </select>
-    <update id="saveCookie">
+    <update id="updateCookie">
         update user set cookie = #{cookie} where userId = #{userId}
     </update>
-    <select id="userExist" parameterType="java.lang.String" resultType="java.lang.Boolean">
-        <![CDATA[ select * from user where name = #{name} ]]>
+    <select id="selectUserCountByName" parameterType="java.lang.String" resultType="java.lang.Integer">
+        select count(*) from user where name = #{name}
     </select>
-    <insert id="createUser" parameterType="com.velsharoon.vo.User" useGeneratedKeys="true" keyProperty="userId">
-        insert into user (name,password) values (#{name},#{password});
+    <insert id="insertUser" parameterType="com.velsharoon.vo.User"  useGeneratedKeys="true" keyProperty="user.userId" >
+        insert into user (name,password) values (#{user.name},#{user.password});
     </insert>
 </mapper>

@@ -3,19 +3,15 @@ package com.velsharoon.dao;
 import com.velsharoon.vo.User;
 import org.apache.ibatis.annotations.Param;
 
-import java.util.List;
-
 public interface IUserDao {
 
-    List<User> getUserList();
+    User selectUser(@Param("name") String userName, @Param("password") String password);
 
-    User getUser(@Param("name") String userName, @Param("password") String password);
+    User selectUserByCookie(@Param("cookie") String cookie);
 
-    User getUserByCookie(@Param("cookie") String cookie);
+    void updateCookie(@Param("userId") String userId, @Param("cookie") String cookie);
 
-    void saveCookie(@Param("userId") String userId, @Param("cookie") String cookie);
+    Integer insertUser(@Param("user") User user);
 
-    boolean userExist(@Param("name") String userName);
-
-    User createUser(@Param("name") String userName, @Param("password") String password);
+    Integer selectUserCountByName(@Param("name") String userName);
 }

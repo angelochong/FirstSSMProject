@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -23,8 +24,9 @@ public class PassportController {
         String password = request.getParameter("password");
         User user = passportService.getUser(userName, password);
         if (user != null) {
-            String cookie = passportService.getCookie(user);
-            response.setHeader("Set-Cookie", cookie);
+            String cookieStr = passportService.getCookie(user);
+            Cookie cookie = new Cookie("Cookie", cookieStr);
+            response.addCookie(cookie);
             return ServerResponse.createBySuccess("成功", user);
         }
         return ServerResponse.createByError("无此用户，请先注册");
@@ -34,11 +36,17 @@ public class PassportController {
     public ServerResponse<User> register(HttpServletRequest request, HttpServletResponse response) {
         String userName = request.getParameter("userName");
         String password = request.getParameter("password");
-        boolean userExist = passportService.userExist(userName);
-        if (!userExist) {
-            User user = passportService.createUser(userName, password);
-            String cookie = passportService.getCookie(user);
-            response.setHeader("Set-Cookie", cookie);
+        Integer count = passportService.getUserCountByName(userName);
+        if (count == 0) {
+            User user = new User();
+            user.setName(userName);
+            user.setPassword(password);
+            passportService.createUser(user);
+            System.out.println(user.getUserId());
+            System.out.println(user.getName() + user.getPassword());
+            String cookieStr = passportService.getCookie(user);
+            Cookie cookie = new Cookie("Cookie", cookieStr);
+            response.addCookie(cookie);
             return ServerResponse.createBySuccess("成功", user);
         }
         return ServerResponse.createByError("用户已存在");
