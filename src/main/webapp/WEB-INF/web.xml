@@ -31,20 +31,28 @@
         <url-pattern>/*</url-pattern>
     </filter-mapping>
 
+    <!-- filter中注入service 必须配置-->
     <filter>
-        <filter-name>DelegatingFilterProxy</filter-name>
+        <filter-name>AuthFilter</filter-name>
         <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
-        <init-param>
-            <param-name>targetBeanName</param-name>
-            <param-value>AuthFilter</param-value>
-        </init-param>
-        <init-param>
-            <param-name>targetFilterLifecycle</param-name>
-            <param-value>true</param-value>
-        </init-param>
     </filter>
     <filter-mapping>
-        <filter-name>DelegatingFilterProxy</filter-name>
+        <filter-name>AuthFilter</filter-name>
         <url-pattern>/*</url-pattern>
     </filter-mapping>
+    <listener>
+        <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+    </listener>
+
+    <listener>
+        <listener-class>
+            org.springframework.web.context.request.RequestContextListener
+        </listener-class>
+    </listener>
+
+    <context-param>
+        <param-name>contextConfigLocation</param-name>
+        <param-value>classpath*:spring/spring-*.xml</param-value>
+    </context-param>
+    <!-- filter中注入service 必须配置-->
 </web-app>
